@@ -24,4 +24,4 @@ This sets 'X' at a certain position. If successful, returns 0; else -1
 This sets 'O' at a certain position. If successful, returns 0; else -1
 
 ## `game.won`
-After a move, this variable will be `True` if the last player who played has won. Else, it is false.
+After a move, this variable will be `True` if the last player who played has won. Else, it is `False`.

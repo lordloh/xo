@@ -14,26 +14,38 @@ class xo:
 		return 0;
 		
 	def setX(self,posx,posy):
+		# check if X is playing first.
 		if self.turn==0:
 			self.modResX=0;
 			self.modResO=1;
+		# check if X is not playing out of turn.
 		if self.turn%2==self.modResX:
-			self.board[posx][posy]=2;
-			self.turn+=1;
-			self.win(2);
-			return 0;
+			# check if we are overwriting a position
+			if (self.board[posx][posy]==0):
+				self.board[posx][posy]=2;
+				self.turn+=1;
+				self.win(2);
+				return 0;
+			else:
+				return -2;
 		else:
 			return -1;
 	
 	def setO(self,posx,posy):
+		# check if O is playing first.
 		if self.turn==0:
 			self.modResX=1;
 			self.modResO=0;
+		# check if O is not playing out of turn.
 		if self.turn%2==self.modResO:
-			self.board[posx][posy]=1;
-			self.turn+=1;
-			self.win(1);
-			return 0;
+			# check if we are overwriting a position
+			if (self.board[posx][posy]==0):
+				self.board[posx][posy]=1;
+				self.turn+=1;
+				self.win(1);
+				return 0;
+			else:
+				return -2;
 		else:
 			return -1;
 	
@@ -96,6 +108,16 @@ def main():
 	print(g.won);
 	
 	print(g.setO(2,0));
+	g.showBoard();
+	print(g.won);
+	
+	# Playing out of turn
+	print(g.setO(0,2));
+	g.showBoard();
+	print(g.won);
+	
+	# Overwriting a position
+	print(g.setX(2,0));
 	g.showBoard();
 	print(g.won);
 	
