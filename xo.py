@@ -9,6 +9,17 @@ class res(Enum):
 	OUT_OF_TURN = -1
 	INVALID_MOVE = -2
 
+def transpose(board):
+	transBoard=[[0,0,0],[0,0,0],[0,0,0]]
+	c=0;
+	for b in board:
+		r=2
+		for e in b:
+			transBoard[r][c]=e;
+			r -= 1
+		c += 1
+	return transBoard
+
 class xo:
 	def __init__(self):
 		self.board = [ [0, 0, 0 ] , [ 0, 0, 0 ] , [ 0, 0, 0 ] ]
@@ -115,8 +126,7 @@ class xo:
 	
 	def has_won(self,player):
 		self.count_empty_squares();
-		#transBoard = list(map(list, zip(*self.board)))
-		transBoard = list(zip(*self.board[::-1]))
+		transBoard = transpose(self.board);
 		result = self.check_board_for_winner( self.board, player ) | self.check_board_for_winner( transBoard, player )
 		returnVal = self.res.OK
 		# check for draw
@@ -158,15 +168,16 @@ class xo:
 			win = True
 		return win
 	
-	def transpose(self,board):
-		c=0;
-		for b in board:
-			r=0
-			for e in b:
-				transBoard[c][r]=e;
-				r += 1
-			c += 1
-				
+	def board2str(self,boardS):
+		boardString=""
+		for i in range(0, 3):
+			for j in range (0,3):
+				if j < 2:
+					boardString += self.sym[boardS[i][j]] + '| '
+				else:
+					boardString += self.sym[boardS[i][j]];
+			boardString += "\n"
+		return boardString;		
 	
 	def getBoard(self):
 		boardString="";
