@@ -34,6 +34,7 @@ class xo:
 		#self.res=enum(OK = 0, WIN = 1, DRAW = 2, OUT_OF_TURN = -1, INVALID_MOVE = -2)
 		self.res=res;
 		self.empty_positions = 9
+		self.MAX_POS = 9
 		
 	def set_pos(self,pos_x,pos_y,player):
 		if (player >= 0 & player < 3):
@@ -41,45 +42,48 @@ class xo:
 		return 0
 		
 	def set_absolute(self,pos,player):
-		if (self.turn == 0):
-			if (player == 1):
-				self.X_TURN_MODULUS = 1
-				self.O_TURN_MODULUS = 0
-			elif (player == 2):
-				self.X_TURN_MODULUS = 0
-				self.O_TURN_MODULUS = 1
-		if ( self.game_over == True ):
-			returnVal=res.INVALID_MOVE
-		else:
-			pos_x = math.floor( pos / 3 )
-			pos_y = pos % 3
-			if (player == 1):
-				# if player 1, Check if player is playing out of turn.
-				if (self.turn % 2 == self.O_TURN_MODULUS):
-					# check if we are overwriting a position
-					if (self.board[pos_x][pos_y] == 0):
-						self.board[pos_x][pos_y] = self.PLAYER_O
-						self.turn += 1
-						returnVal = self.has_won(self.PLAYER_O)
-					else:
-						returnVal = self.res.INVALID_MOVE;	
-				else:
-					returnVal = self.res.OUT_OF_TURN
-			elif (player == 2):
-				# if player 2, Check if player is playing out of turn.
-				if (self.turn % 2 == self.X_TURN_MODULUS):
-					# check if we are overwriting a position
-					if (self.board[pos_x][pos_y] == 0):
-						self.board[pos_x][pos_y] = self.PLAYER_X
-						self.turn += 1
-						returnVal = self.has_won(self.PLAYER_X)
-					else:
-						returnVal = self.res.INVALID_MOVE;
-				else:
-					returnVal = self.res.OUT_OF_TURN
+		if (pos < self.MAX_POS):
+			if (self.turn == 0):
+				if (player == 1):
+					self.X_TURN_MODULUS = 1
+					self.O_TURN_MODULUS = 0
+				elif (player == 2):
+					self.X_TURN_MODULUS = 0
+					self.O_TURN_MODULUS = 1
+			if ( self.game_over == True ):
+				returnVal=res.INVALID_MOVE
 			else:
-				# actually invalid player
-				returnVal = self.res.INVALID_MOVE
+				pos_x = math.floor( pos / 3 )
+				pos_y = pos % 3
+				if (player == 1):
+					# if player 1, Check if player is playing out of turn.
+					if (self.turn % 2 == self.O_TURN_MODULUS):
+						# check if we are overwriting a position
+						if (self.board[pos_x][pos_y] == 0):
+							self.board[pos_x][pos_y] = self.PLAYER_O
+							self.turn += 1
+							returnVal = self.has_won(self.PLAYER_O)
+						else:
+							returnVal = self.res.INVALID_MOVE;	
+					else:
+						returnVal = self.res.OUT_OF_TURN
+				elif (player == 2):
+					# if player 2, Check if player is playing out of turn.
+					if (self.turn % 2 == self.X_TURN_MODULUS):
+						# check if we are overwriting a position
+						if (self.board[pos_x][pos_y] == 0):
+							self.board[pos_x][pos_y] = self.PLAYER_X
+							self.turn += 1
+							returnVal = self.has_won(self.PLAYER_X)
+						else:
+							returnVal = self.res.INVALID_MOVE;
+					else:
+						returnVal = self.res.OUT_OF_TURN
+				else:
+					# actually invalid player
+					returnVal = self.res.INVALID_MOVE
+		else:
+			returnVal = self.res.INVALID_MOVE
 		return returnVal
 		
 	def set_X(self, pos_x, pos_y):
