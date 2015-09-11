@@ -3,10 +3,12 @@ from xo import xo
 from human import human
 
 def main():
-	print("Tic Tac Toe Platform\nHuman vs Human\n")
+	print("\nTic Tac Toe Platform\nHuman vs Human Player\n______________________\n")
 	
-	player1 = human(1)
-	player2 = human(2)
+	name = input("Player 1 - Enter your name :")
+	player1 = human(1,name)
+	name = input("Player 2 - Enter your name :")
+	player2 = human(2,name)
 	
 	
 	g=xo()

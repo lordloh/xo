@@ -1,8 +1,8 @@
 #! /usr/bin/python3
 
 class human:
-    def __init__(self,play_as):
-        self.name = input("Enter your name :")
+    def __init__(self,play_as,name):
+        self.name = name
         self.sym = [ ' ', '0', 'X' ]
         self.play_as = play_as;
         

@@ -6,8 +6,9 @@ from randomPlayer import randomPlayer
 def main():
 	print("\nTic Tac Toe Platform\nHuman vs Random Player\n______________________\n")
 	
-	player1 = human(1)
-	player_random = randomPlayer(2)
+	name = input("Human Player, enter your name :")
+	player1 = human(1,name)
+	player_random = randomPlayer(2,"Random Player")
 	
 	
 	g=xo()

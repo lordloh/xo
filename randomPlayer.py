@@ -3,10 +3,10 @@
 from random import randint
 
 class randomPlayer:
-    def __init__(self,play_as):
+    def __init__(self,play_as,name):
         self.sym = [ ' ', '0', 'X' ]
         self.play_as = play_as;
-        self.name = "Random Player"
+        self.name = name
         
     def play(self,board):
         possible_moves=[];
