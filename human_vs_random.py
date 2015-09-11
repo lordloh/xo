@@ -4,21 +4,34 @@ from human import human
 from randomPlayer import randomPlayer
 
 def main():
-	print("Tic Tac Toe Platform\nHuman vs Human\n")
+	print("\nTic Tac Toe Platform\nHuman vs Random Player\n______________________\n")
 	
 	player1 = human(1)
-	player2 = randomPlayer(2)
+	player_random = randomPlayer(2)
 	
 	
 	g=xo()
 	while(g.game_over == False):
-		move = player1.play(g.board)
-		result = g.set_absolute(move,1)
-		print (str(g.game_over)+" >>>"+str(result))
+		while True:
+			move = player1.play(g.board)
+			result = g.set_absolute(move,1)
+			print (str(result)+"\n")
+			if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
+				break
+		if (result == g.res.WIN):
+			print ("______________________")
+			print (g.getBoard())
+			print (player1.name+" has won")
+			print ("______________________")
 		if (g.game_over == False):
-			move = player2.play(g.board)
+			move = player_random.play(g.board)
 			result = g.set_absolute(move,2)
-			print (str(g.game_over)+" *** "+str(result))
+			print (str(result)+"\n")
+			if (result == g.res.WIN):
+				print ("______________________")
+				print (g.getBoard())
+				print (player_random.name+" has won")
+				print ("______________________")
 	
 
 if __name__ == '__main__':

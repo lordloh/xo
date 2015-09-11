@@ -18,9 +18,10 @@ def main():
 			if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
 				break
 		if (result == g.res.WIN):
-			print ("*********************")
+			print ("______________________")
 			print (g.getBoard())
 			print (player1.name+" has won")
+			print ("______________________")
 		if (g.game_over == False):
 			while True:
 				move = player2.play(g.board)
@@ -29,9 +30,10 @@ def main():
 				if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
 					break
 			if (result == g.res.WIN):
-				print ("*********************")
+				print ("______________________")
 				print (g.getBoard())
-				print(player1.name+" has won")
+				print (player2.name+" has won")
+				print ("______________________")
 	
 
 if __name__ == '__main__':

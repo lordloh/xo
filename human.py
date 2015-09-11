@@ -7,7 +7,7 @@ class human:
         self.play_as = play_as;
         
     def play(self,board):
-        boardString = "";
+        boardString = "*********************\n";
         for i in range(0, 3):
             for j in range (0,3):
                 if j < 2:

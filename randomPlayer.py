@@ -6,6 +6,7 @@ class randomPlayer:
     def __init__(self,play_as):
         self.sym = [ ' ', '0', 'X' ]
         self.play_as = play_as;
+        self.name = "Random Player"
         
     def play(self,board):
         possible_moves=[];
