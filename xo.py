@@ -139,10 +139,10 @@ class xo:
 			self.game_over = True
 			self.won = True
 			returnVal = self.res.WIN
-		elif (result == False & self.game_over == True):
+		elif ((result == False) & (self.game_over == True)):
 			# No winner and no moves left.
 			returnVal = self.res.DRAW
-		elif (result == False & self.game_over == False):
+		elif ((result == False) & (self.game_over == False)):
 			# No winner and game not over. Play on.
 			returnVal = self.res.OK
 		self.won=result
