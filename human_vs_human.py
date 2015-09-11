@@ -11,13 +11,27 @@ def main():
 	
 	g=xo()
 	while(g.game_over == False):
-		move = player1.play(g.board)
-		result = g.set_absolute(move,1)
-		print (str(g.game_over)+" >>>"+str(result))
+		while True:
+			move = player1.play(g.board)
+			result = g.set_absolute(move,1)
+			print (str(result)+"\n")
+			if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
+				break
+		if (result == g.res.WIN):
+			print ("*********************")
+			print (g.getBoard())
+			print (player1.name+" has won")
 		if (g.game_over == False):
-			move = player2.play(g.board)
-			result = g.set_absolute(move,2)
-			print (str(g.game_over)+" *** "+str(result))
+			while True:
+				move = player2.play(g.board)
+				result = g.set_absolute(move,2)
+				print (str(result)+"\n")
+				if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
+					break
+			if (result == g.res.WIN):
+				print ("*********************")
+				print (g.getBoard())
+				print(player1.name+" has won")
 	
 
 if __name__ == '__main__':
