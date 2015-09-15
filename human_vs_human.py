@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 from xo import xo
 from human import human
+from err import *
 
 def main():
 	print("\nTic Tac Toe Platform\nHuman vs Human Player\n______________________\n")
@@ -11,27 +12,27 @@ def main():
 	player2 = human(2,name)
 	
 	
-	g=xo()
+	g=xo(3,3,2,['X','O'],[1,2])
 	while(g.game_over == False):
 		while True:
-			move = player1.play(g.board)
-			result = g.set_absolute(move,1)
+			move = player1.play(g.brd.board)
+			result = g.mark(move,1)
 			print (str(result)+"\n")
-			if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
+			if (not((result == err.INVALID_MOVE) | (result == err.OUT_OF_TURN))):
 				break
-		if (result == g.res.WIN):
+		if (result == err.WIN):
 			print ("______________________")
 			print (g.getBoard())
 			print (player1.name+" has won")
 			print ("______________________")
 		if (g.game_over == False):
 			while True:
-				move = player2.play(g.board)
-				result = g.set_absolute(move,2)
+				move = player2.play(g.brd.board)
+				result = g.mark(move,2)
 				print (str(result)+"\n")
-				if (not((result == g.res.INVALID_MOVE) | (result == g.res.OUT_OF_TURN))):
+				if (not((result == err.INVALID_MOVE) | (result == err.OUT_OF_TURN))):
 					break
-			if (result == g.res.WIN):
+			if (result == err.WIN):
 				print ("______________________")
 				print (g.getBoard())
 				print (player2.name+" has won")
