@@ -1,14 +1,11 @@
 #! /usr/bin/python3
 from enum import Enum
+from board import board,err
 import math
+from numpy import *
 
-class res(Enum):
-	OK = 0
-	WIN = 1
-	DRAW = 2
-	OUT_OF_TURN = -1
-	INVALID_MOVE = -2
 
+	
 def transpose(board):
 	transBoard=[[0,0,0],[0,0,0],[0,0,0]]
 	c=0;
@@ -20,223 +17,123 @@ def transpose(board):
 		c += 1
 	return transBoard
 
+"""
+A generalized tic tac toe game class.
+"""
 class xo:
-	def __init__(self):
-		self.board = [ [0, 0, 0 ] , [ 0, 0, 0 ] , [ 0, 0, 0 ] ]
-		self.sym = [ ' ', '0', 'X' ]
-		self.turn = 0
-		self.X_TURN_MODULUS = -1
-		self.O_TURN_MODULUS = -1
-		self.PLAYER_X = 2
-		self.PLAYER_O = 1
-		self.won = False
-		self.game_over = False
-		#self.res=enum(OK = 0, WIN = 1, DRAW = 2, OUT_OF_TURN = -1, INVALID_MOVE = -2)
-		self.res=res;
-		self.empty_positions = 9
-		self.MAX_POS = 9
+	def __init__(o,M,N,K,sym,order):
+		"""
+		Initilize a game with a board of size M x N with K players using the symbols in the list sym.
+		The players play in the order specified by the list order.
+		"""
+		o.brd = board(3, 3, 2, sym)
+		o.turn = 0
+		o.play_order = order
+		o.num_players = K
+		o.gameLog = ones((9,2),int)*-1
+		o.game_over = False
 		
-	def set_pos(self,pos_x,pos_y,player):
-		if (player >= 0 & player < 3):
-			self.board[pos_x][pos_y]=player
-		return 0
+	def mark(o,pos,player):
+		"""
+		Marks a position on the board with the symbol for the player.
 		
-	def set_absolute(self,pos,player):
-		if (pos < self.MAX_POS):
-			if (self.turn == 0):
-				if (player == 1):
-					self.X_TURN_MODULUS = 1
-					self.O_TURN_MODULUS = 0
-				elif (player == 2):
-					self.X_TURN_MODULUS = 0
-					self.O_TURN_MODULUS = 1
-			if ( self.game_over == True ):
-				returnVal=res.INVALID_MOVE
+		If the position is already marked, the function returns err.INVALID_MOVE
+		
+		If a player attempts to play out of turn, the function returns err.OUT_OF_TURN
+		"""
+		#print (str(o.play_order)+"::P:"+str(o.num_players)+"::O:"+ str(o.play_order[ (o.turn % o.num_players) ])+"::" )
+		if (o.game_over == False):
+			if (player == o.play_order[(o.turn % o.num_players)]):
+				returnVal = o.brd.set_pos(pos,player)
+				if (returnVal == err.OK):
+					o.gameLog[o.turn] = [player, pos]
+					#print(str(o.turn)+"\n____\n"+str(o.gameLog))
+					o.turn += 1
+					returnVal = o.has_won(player)
+					if (returnVal == err.WIN):
+						o.game_over = True
 			else:
-				pos_x = math.floor( pos / 3 )
-				pos_y = pos % 3
-				if (player == 1):
-					# if player 1, Check if player is playing out of turn.
-					if (self.turn % 2 == self.O_TURN_MODULUS):
-						# check if we are overwriting a position
-						if (self.board[pos_x][pos_y] == 0):
-							self.board[pos_x][pos_y] = self.PLAYER_O
-							self.turn += 1
-							returnVal = self.has_won(self.PLAYER_O)
-						else:
-							returnVal = self.res.INVALID_MOVE;	
-					else:
-						returnVal = self.res.OUT_OF_TURN
-				elif (player == 2):
-					# if player 2, Check if player is playing out of turn.
-					if (self.turn % 2 == self.X_TURN_MODULUS):
-						# check if we are overwriting a position
-						if (self.board[pos_x][pos_y] == 0):
-							self.board[pos_x][pos_y] = self.PLAYER_X
-							self.turn += 1
-							returnVal = self.has_won(self.PLAYER_X)
-						else:
-							returnVal = self.res.INVALID_MOVE;
-					else:
-						returnVal = self.res.OUT_OF_TURN
-				else:
-					# actually invalid player
-					returnVal = self.res.INVALID_MOVE
+				print ("OUT OF TURN")
+				returnVal = err.OUT_OF_TURN
 		else:
-			returnVal = self.res.INVALID_MOVE
+			returnVal = err.INVALID_MOVE
 		return returnVal
+	
+	def getBoard(o):
+		return o.brd.get_board_str();
 		
-	def set_X(self, pos_x, pos_y):
-		if ( self.game_over == False ):
-			# check if X is playing first.
-			if self.turn == 0:
-				self.X_TURN_MODULUS = 0
-				self.O_TURN_MODULUS = 1
-			# check if X is not playing out of turn.
-			if self.turn % 2 == self.X_TURN_MODULUS:
-				# check if we are overwriting a position
-				if (self.board[pos_x][pos_y] == 0):
-					self.board[pos_x][pos_y] = self.PLAYER_X
-					self.turn += 1
-					# Check if the last move resulted in a victory
-					return self.has_won(self.PLAYER_X)
-				else:
-					return self.res.INVALID_MOVE
+	def has_won(o,player):
+		"""
+		Implemented for standard 3x3 tic tac toe game
+		"""
+		#o.brd.count_empty_squares();
+		if (o.brd.free_positions == 0):
+			o.game_over = True
+		win_logic = (o.brd.board == player)
+		# Check linear
+		for i in range(0,2):
+			lin_sum = sum ( sum(win_logic,i) == 3 )
+			#print ("LS::"+str (i)+"::" + str (sum(sum(win_logic,axis=i)==3 )))
+			if (lin_sum == 1):
+				returnVal=err.WIN;
+				break
 			else:
-				return self.res.OUT_OF_TURN
-		else:
-			return self.res.INVALID_MOVE;
-	
-	def set_O(self,pos_x,pos_y):
-		# check if O is playing first.
-		if ( self.game_over == False ):
-			if self.turn == 0:
-				self.X_TURN_MODULUS = 1
-				self.O_TURN_MODULUS = 0
-			# check if O is not playing out of turn.
-			if self.turn % 2 == self.O_TURN_MODULUS:
-				# check if we are overwriting a position
-				if ( self.board[pos_x][pos_y] == 0 ):
-					self.board[pos_x][pos_y] = self.PLAYER_O
-					self.turn += 1
-					# Check if the last move resulted in a victory
-					return self.has_won(self.PLAYER_O)
-				else:
-					return self.res.INVALID_MOVE
-			else:
-				return self.res.OUT_OF_TURN
-		else:
-			return self.res.INVALID_MOVE
-	
-	def has_won(self,player):
-		self.count_empty_squares();
-		transBoard = transpose(self.board);
-		result = self.check_board_for_winner( self.board, player ) | self.check_board_for_winner( transBoard, player )
-		returnVal = self.res.OK
-		# check for draw
-		if (result == True):
-			# We have a winner
-			self.game_over = True
-			self.won = True
-			returnVal = self.res.WIN
-		elif ((result == False) & (self.game_over == True)):
-			# No winner and no moves left.
-			returnVal = self.res.DRAW
-		elif ((result == False) & (self.game_over == False)):
-			# No winner and game not over. Play on.
-			returnVal = self.res.OK
-		self.won=result
-		return returnVal
+				returnVal = err.OK
+		# check diagonals
+		if (returnVal == err.OK):
+			if (((sum(diagonal(win_logic)))==3) | ((sum(diagonal(transpose(win_logic))))==3) ):
+				returnVal=err.WIN
+		if ((o.game_over == True) & (returnVal == err.OK)):
+			returnVal = err.DRAW
+		return returnVal;
 		
-	def count_empty_squares(self):
-		# Count the number of empty squares
-		self.empty_positions = 0
-		for i in self.board:
-			for j in i:
-				if j == 0:
-					self.empty_positions += 1;
-		if self.empty_positions == 0:
-			# If there are no empty squares, then pronounce the game over.
-			self.game_over = True;
-	
-	def check_board_for_winner(self,board,player):
-		# Check 3 horizontal and 1 diagonal.
-		win = False
-		if board[0] == [player, player, player]:
-			win = True
-		if board[1] == [player, player, player]:
-			win = True
-		if board[2] == [player, player, player]:
-			win = True
-		if ( [board[0][0], board[1][1], board[2][2]] == [ player, player, player ] ):
-			win = True
-		return win
-	
-	def board2str(self,boardS):
-		boardString=""
-		for i in range(0, 3):
-			for j in range (0,3):
-				if j < 2:
-					boardString += self.sym[boardS[i][j]] + '| '
-				else:
-					boardString += self.sym[boardS[i][j]];
-			boardString += "\n"
-		return boardString;		
-	
-	def getBoard(self):
-		boardString="";
-		for i in range(0, 3):
-			for j in range (0,3):
-				if j < 2:
-					boardString += self.sym[self.board[i][j]] + '| ';
-				else:
-					boardString += self.sym[self.board[i][j]];
-			boardString += "\n"
-		return boardString;	
+	def stateless_has_won(o,board,player):
+		"""
+		Implemented for standard 3x3 tic tac toe game
+		"""
+		game_over = False
+		free_positions = sum(sum(board == 0))
+		if (free_positions == 0):
+			game_over = True
+		win_logic = (board == player)
+		# Check linear
+		for i in range(0,2):
+			lin_sum = sum ( sum(win_logic,i) == 3 )
+			#print ("LS::"+str (i)+"::" + str (sum(sum(win_logic,axis=i)==3 )))
+			if (lin_sum == 1):
+				returnVal=err.WIN;
+				break
+			else:
+				returnVal = err.OK
+		# check diagonals
+		if (returnVal == err.OK):
+			if (((sum(diagonal(win_logic)))==3) | ((sum(diagonal(transpose(win_logic))))==3) ):
+				returnVal=err.WIN
+		if ((game_over == True) & (returnVal == err.OK)):
+			returnVal = err.DRAW
+		return returnVal;
+
 		
 def main():
-	print("Tic Tac Toe Platform")
-	g=xo()
+	print("\nTic Tac Toe Platform Test\n_________________________")
+	g=xo(3,3,2,['X','O'],[2,1])
 	print(g.getBoard())
 	
-	print('Play :'+repr(g.set_X(2,2)))
+	g.mark(0,1)
 	print(g.getBoard())
-	print('----------')
+	g.mark(0,2)
+	print(g.getBoard())
+	g.mark(2,2)
+	print(g.getBoard())
+	g.mark(3,1)
+	print(g.getBoard())
+	g.mark(4,2)
+	print(g.getBoard())
 	
-	print('Play :'+repr(g.set_O(0,2)))
-	print(g.getBoard())
-	print('----------')
-	
-	print('Play :'+str(g.set_X(1,2)))
-	print(g.getBoard())
-	print('----------')
-	
-	print('Play :'+str(g.set_O(2,0)))
-	print(g.getBoard())
-	print('----------')
-
-	print('Play :'+str(g.set_X(0,0)))
-	print(g.getBoard())
-	print('----------')
-	
-	print('Play :'+str(g.set_O(0,1)))
-	print(g.getBoard())
-	print('----------')
-	
-	# out of turn
-	print('Play :'+str(g.set_O(0,1)))
-	print(g.getBoard())
-	print('----------')
-	
-	# invalid move
-	print('Play :'+str(g.set_O(0,1)))
-	print(g.getBoard())
-	print('----------')
-	
-	
-	print('Play :'+str((g.set_X(1,1))))
-	print(g.getBoard())
-	print('----------')
+	print ("Game Log:"+str(g.gameLog))
 
 if __name__ == '__main__':
+	if __doc__:
+		print ('Module:')
+		print (__doc__ + '\n')
 	main()
