@@ -2,7 +2,7 @@
 from xo import xo
 from humanPlayer import humanPlayer
 from randomPlayer import randomPlayer
-from randomPlayer1S import randomPlayer1S
+from random1SPlayer import random1SPlayer
 from err import err
 
 from random import randint
@@ -17,8 +17,8 @@ def main():
 	global LINE
 	PLAY_ORDER = [1,2]
 	g=xo(3,3,2,['X','O'],PLAY_ORDER)
-	player1 = randomPlayer1S(1,"Rand 1",g)
-	player2 = randomPlayer1S(2,"Rand 2",g)	
+	player1 = random1SPlayer(1,"Rand 1",g)
+	player2 = random1SPlayer(2,"Rand 2",g)	
 	print('\nTic Tac Toe Platform\n'+player1.title+' vs '+player2.title)
 	console_log(0,LINE)
 	

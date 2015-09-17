@@ -6,7 +6,7 @@ from err import err
 from copy import *
 from numpy import *
 
-class randomPlayer1S:
+class random1SPlayer:
     """
     The random player with 1 step look ahead finds a list of valid moves, and 
     chooses one among it such that it can win the next move, or prevent an 
@@ -44,6 +44,7 @@ class randomPlayer1S:
         # We cannot win in the next move.
         if (move == -1):
             # See if our adversary can win if give a chance to play.
+            # Compute the adversary's id
             temp = roll(o.game.play_order,1)
             adversary=temp[o.play_as-1]
             for m in possible_moves:
