@@ -9,25 +9,38 @@ class board:
         Initilize a board of size m (rows) x n (columns), with k players playing in turn.
         Players use the symbols specified.
         """
-        row = [0] * N
         o.row = N
         o.col = M
+        o.max_address = (M * N)
         o.num_players = K
-        o.board = zeros((M,N), int)
         o.players = list(range(0,(K+1)))
         o.sym = [' ']+symbols
-        o.free_positions = M * N
+        o.reset()
     
-    def set_pos(o,pos,player):
+    def reset(o):
+        row = [0] * o.row
+        o.board = zeros((o.col,o.row), int)
+        o.free_positions = o.col * o.row
+    
+    def get_xy_from_pos(o,pos):
         x = int (math.floor( pos / o.row ))
         y = pos % o.col
-        if (o.board[x][y] == 0):
-            o.board[x][y] = player
-            returnVal = err.OK
-            o.free_positions -= 1
+        return x , y
+    
+    def set_pos(o,pos,player):
+        if ( pos < o.max_address ):
+            #x = int (math.floor( pos / o.row ))
+            #y = pos % o.col
+            x,y = o.get_xy_from_pos(pos)
+            if (o.board[x][y] == 0):
+                o.board[x][y] = player
+                returnVal = err.OK
+                o.free_positions -= 1
+            else:
+                returnVal = err.INVALID_MOVE
+            #dbg(1,"X:" + str(x) + "  Y:" +str(y)+" R:"+str(returnVal))
         else:
             returnVal = err.INVALID_MOVE
-        #dbg(1,"X:" + str(x) + "  Y:" +str(y)+" R:"+str(returnVal))
         return returnVal
     
     def get_board_str(o):

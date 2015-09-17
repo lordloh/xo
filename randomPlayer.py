@@ -3,14 +3,19 @@
 from random import randint
 
 class randomPlayer:
-    def __init__(self,play_as,name):
-        self.sym = [ ' ', '0', 'X' ]
-        self.play_as = play_as;
-        self.name = name
+    """
+    The random player finds a list of valid moves, and chooses one among it.
+    """
+    def __init__(o,play_as,name,game):
+        o.play_as = play_as;
+        o.name = name
+        o.title = "Random Player"
+        o.game = game
         
-    def play(self,board):
+    def play(o):
         possible_moves=[];
         n = 0
+        board = o.game.brd.board
         for b in board:
             for e in b:
                 if (e == 0):

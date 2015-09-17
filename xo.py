@@ -4,7 +4,7 @@ from board import board,err
 import math
 from numpy import *
 
-
+VERBOSE = 0
 	
 def transpose(board):
 	transBoard=[[0,0,0],[0,0,0],[0,0,0]]
@@ -27,12 +27,17 @@ class xo:
 		The players play in the order specified by the list order.
 		"""
 		o.brd = board(3, 3, 2, sym)
-		o.turn = 0
 		o.play_order = order
 		o.num_players = K
+		o.reset()
+	
+	def reset(o):
+		o.brd.reset()
+		o.game_turn = 0
 		o.gameLog = ones((9,2),int)*-1
 		o.game_over = False
-		
+		o.turn = o.play_order[0]
+	
 	def mark(o,pos,player):
 		"""
 		Marks a position on the board with the symbol for the player.
@@ -41,39 +46,42 @@ class xo:
 		
 		If a player attempts to play out of turn, the function returns err.OUT_OF_TURN
 		"""
-		#print (str(o.play_order)+"::P:"+str(o.num_players)+"::O:"+ str(o.play_order[ (o.turn % o.num_players) ])+"::" )
+		# Are we trying to play after the game is over?
 		if (o.game_over == False):
-			if (player == o.play_order[(o.turn % o.num_players)]):
+			# Is a player trying to play out of turn?
+			if (player == o.play_order[(o.game_turn % o.num_players)]):
 				returnVal = o.brd.set_pos(pos,player)
+				# is the postion selected to mark is not invalid?
 				if (returnVal == err.OK):
-					o.gameLog[o.turn] = [player, pos]
-					#print(str(o.turn)+"\n____\n"+str(o.gameLog))
-					o.turn += 1
+					o.gameLog[o.game_turn] = [player, pos]
+					o.game_turn += 1
+					# Do we have a winner?
 					returnVal = o.has_won(player)
 					if (returnVal == err.WIN):
+						# Yes. We do have a winner
 						o.game_over = True
 			else:
-				print ("OUT OF TURN")
+				# Cheat! Did you think you could get away by playing out of turn? Well, you cant!
+				console_log(1,"OUT OF TURN")
 				returnVal = err.OUT_OF_TURN
 		else:
+			# yes. A player tried to play after the game was over... Droids !!!
 			returnVal = err.INVALID_MOVE
 		return returnVal
 	
-	def getBoard(o):
+	def get_board(o):
 		return o.brd.get_board_str();
 		
 	def has_won(o,player):
 		"""
 		Implemented for standard 3x3 tic tac toe game
 		"""
-		#o.brd.count_empty_squares();
 		if (o.brd.free_positions == 0):
 			o.game_over = True
 		win_logic = (o.brd.board == player)
 		# Check linear
 		for i in range(0,2):
 			lin_sum = sum ( sum(win_logic,i) == 3 )
-			#print ("LS::"+str (i)+"::" + str (sum(sum(win_logic,axis=i)==3 )))
 			if (lin_sum == 1):
 				returnVal=err.WIN;
 				break
@@ -99,7 +107,6 @@ class xo:
 		# Check linear
 		for i in range(0,2):
 			lin_sum = sum ( sum(win_logic,i) == 3 )
-			#print ("LS::"+str (i)+"::" + str (sum(sum(win_logic,axis=i)==3 )))
 			if (lin_sum == 1):
 				returnVal=err.WIN;
 				break
@@ -113,22 +120,26 @@ class xo:
 			returnVal = err.DRAW
 		return returnVal;
 
+def console_log(level,log_line):
+	global VERBOSE
+	if level <= VERBOSE:
+		print (log_line)
 		
 def main():
 	print("\nTic Tac Toe Platform Test\n_________________________")
 	g=xo(3,3,2,['X','O'],[2,1])
-	print(g.getBoard())
+	print(g.get_board())
 	
 	g.mark(0,1)
-	print(g.getBoard())
+	print(g.get_board())
 	g.mark(0,2)
-	print(g.getBoard())
+	print(g.get_board())
 	g.mark(2,2)
-	print(g.getBoard())
+	print(g.get_board())
 	g.mark(3,1)
-	print(g.getBoard())
+	print(g.get_board())
 	g.mark(4,2)
-	print(g.getBoard())
+	print(g.get_board())
 	
 	print ("Game Log:"+str(g.gameLog))
 
