@@ -17,8 +17,8 @@ def main():
 	global LINE
 	PLAY_ORDER = [1,2]
 	g=xo(3,3,2,['X','O'],PLAY_ORDER)
-	player1 = random1SPlayer(1,"Rand 1",g)
-	player2 = random1SPlayer(2,"Rand 2",g)	
+	player1 = randomPlayer(1,"Rand 1",g)
+	player2 = random1SPlayer(2,"Rand 2S",g)	
 	print('\nTic Tac Toe Platform\n'+player1.title+' vs '+player2.title)
 	console_log(0,LINE)
 	
@@ -28,7 +28,7 @@ def main():
 	rand2_win_turns = 0
 	draw = 0
 	
-	f = open('game_log_rand_rand1.csv', 'w')
+	f = open('game_log_'+player1.name+'-vs-'+player2.name+'.csv', 'w')
 	# Play N Games
 	for i in range (0, N_GAMES):
 		csv_line = ''

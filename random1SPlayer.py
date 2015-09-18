@@ -62,11 +62,7 @@ class random1SPlayer:
         return int(move)
         
 def main():
-    player=randomPlayer(1);
-    print( player.play([[0,0,0],[0,0,0],[0,0,0]]) )
-    print( player.play([[0,1,0],[0,0,0],[0,0,0]]) )
-    print( player.play([[0,1,2],[0,0,0],[0,0,0]]) )
-    print( player.play([[0,1,2],[1,2,0],[0,0,0]]) )
+    pass
 
 if __name__ == '__main__':
 	main()    
