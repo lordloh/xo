@@ -116,8 +116,7 @@ class xo:
 				returnVal = err.OK
 		# check diagonals
 		if (returnVal == err.OK):
-			if (((sum(diagonal(win_logic))) == 3) | ...
-					((sum(diagonal(transpose(win_logic)))) == 3)):
+			if (((sum(diagonal(win_logic))) == 3) | ((sum(diagonal(transpose(win_logic)))) == 3)):
 				returnVal = err.WIN
 		if ((game_over) & (returnVal == err.OK)):
 			returnVal = err.DRAW

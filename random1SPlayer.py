@@ -23,7 +23,7 @@ class random1SPlayer:
 
     def play(o):
         # Compute possible moves
-        possible_move = []
+        possible_moves = []
         n = 0
         board = deepcopy(o.game.brd.board)
         for b in board:
