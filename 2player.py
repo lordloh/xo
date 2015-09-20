@@ -3,23 +3,25 @@ from xo import xo
 from humanPlayer import humanPlayer
 from randomPlayer import randomPlayer
 from random1SPlayer import random1SPlayer
+from random1SSadistPlayer import random1SSadistPlayer
+from opportunityPlayer import opportunityPlayer
 from err import err
 
 from random import randint
 from numpy import *
 
-VERBOSE = 1
-N_GAMES = 10000
+VERBOSE = 0
+N_GAMES = 10
 ROLL = False
 LINE = "-----------------------------------------"
 
 
 def main():
 	global LINE
-	PLAY_ORDER = [1, 2]
+	PLAY_ORDER = [ 2, 1]
 	g = xo(3, 3, 2, ['X', 'O'], PLAY_ORDER)
 	player1 = random1SPlayer(1, "Rand 1S", g)
-	player2 = random1SPlayer(2, "Rand 2S", g)
+	player2 = random1SSadistPlayer(2, "Sadist 1S", g)
 	print('\nTic Tac Toe Platform\n' + player1.title + ' vs ' + player2.title)
 	console_log(0, LINE)
 
