@@ -12,6 +12,8 @@ Apart from these, one needs players to play on the platform. The current players
 * **humanPlayer.py** - Asks a human what move to make and executes it.
 * **randomPlayer.py** - chooses one of the empty squares at random as the next move.
 * **random1SPlayer.py** - A 1step look ahead player. The player checks the board for positions where it may mark and win in the next move. If it cannot win in the next move, it plays such that it tried to prevent the adversary from winning in the next move. In the absence of either of these types of moves, the player marks a valid square at random.
+* **random1SSadistPlayer.py** - A 1step look ahead player. The player checks the board for positions where it may mark and stop the adversary from winning. If no such position exist, it attempts to find a move by playing which it may win. In the absence of either of these types of moves, the player marks a valid square at random.
+* **opportunityPlayer.py** - A player that marks the square where one has the maximum opportunity to win games. The positions are not re-evaluated after each mave.
 
 
 ## XO class
