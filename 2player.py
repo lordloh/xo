@@ -10,25 +10,25 @@ from err import err
 from random import randint
 from numpy import *
 
-VERBOSE = 0
-N_GAMES = 10
+VERBOSE = 1
+N_GAMES = 10000
 ROLL = False
 LINE = "-----------------------------------------"
 
 
 def main():
 	global LINE
-	PLAY_ORDER = [ 2, 1]
+	PLAY_ORDER = [1, 2]
 	g = xo(3, 3, 2, ['X', 'O'], PLAY_ORDER)
 	player1 = random1SPlayer(1, "Rand 1S", g)
 	player2 = random1SSadistPlayer(2, "Sadist 1S", g)
-	print('\nTic Tac Toe Platform\n' + player1.title + ' vs ' + player2.title)
+	print('\nThe XO - Tic Tac Toe Platform\n' + player1.title + ' vs ' + player2.title)
 	console_log(0, LINE)
 
-	rand1_win = 0
-	rand1_win_turns = 0
-	rand2_win = 0
-	rand2_win_turns = 0
+	player1_win = 0
+	player1_win_turns = 0
+	player2_win = 0
+	player2_win_turns = 0
 	draw = 0
 
 	f = open('game_log_' + player1.name + '-vs-' + player2.name + '.csv', 'w')
@@ -46,23 +46,30 @@ def main():
 			result = g.mark(move, 1)
 			console_log(3, 'Result: ' + str(result) + '\n')
 			if (result == err.DRAW):
+				console_log(2, '______________________')
 				console_log(2, g.get_board())
+				console_log(1, 'Game Drawn')
+				console_log(2, '______________________')
 				current_winner = 0
 				draw += 1
 			if (result == err.WIN):
 				console_log(2, '______________________')
 				console_log(2, g.get_board())
 				console_log(1, player1.name + ' has won')
-				current_winner = 1
 				console_log(2, '______________________')
-				rand1_win += 1
-				rand1_win_turns += g.game_turn
+				current_winner = 1
+				player1_win += 1
+				player1_win_turns += g.game_turn
 			if (not g.game_over):
 				move = player2.play()
 				result = g.mark(move, 2)
 				console_log(3, 'Result: ' + str(result) + '\n')
 				if (result == err.DRAW):
+					console_log(2, '______________________')
 					console_log(2, g.get_board())
+					console_log(1, 'Game Drawn')
+					console_log(2, '______________________')
+					draw += 1
 					current_winner = 0
 					draw += 1
 				if (result == err.WIN):
@@ -71,8 +78,8 @@ def main():
 					console_log(1, player2.name+" has won")
 					console_log(2, "______________________")
 					current_winner = 2
-					rand2_win += 1
-					rand2_win_turns += g.game_turn
+					player2_win += 1
+					player2_win_turns += g.game_turn
 		# Log game to CSV file
 		for i, e in enumerate(g.play_order):
 			csv_line += str(e)+','
@@ -82,13 +89,13 @@ def main():
 		csv_line += '\n'
 		f.write(csv_line)
 	f.close()
-	console_log(1, LINE)
-	print(player1.name + ' Winner :' + str(rand1_win))
-	if(rand1_win > 0):
-		print('Average Moves to win :' + str(rand1_win_turns / rand1_win))
-	print(player2.name + ' Winner :' + str(rand2_win))
-	if(rand2_win > 0):
-		print("Average Moves to win :" + str(rand2_win_turns / rand2_win))
+	console_log(1, '\n' + LINE)
+	print(player1.name + ' Winner :' + str(player1_win))
+	if(player1_win > 0):
+		print('Average Moves to win :' + str(player1_win_turns / player1_win))
+	print(player2.name + ' Winner :' + str(player2_win))
+	if(player2_win > 0):
+		print("Average Moves to win :" + str(player2_win_turns / player2_win))
 	print('Draw :' + str(draw))
 
 
