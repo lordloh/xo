@@ -19,6 +19,9 @@ class opportunityPlayer:
 		o.game = game
 		o.opportunity = [3, 2, 3, 2, 4, 2, 3, 2, 3]
 
+	def reset(self):
+		pass
+
 	def play(o):
 		# Compute possible moves
 		possible_moves = []

@@ -5,13 +5,14 @@ from randomPlayer import randomPlayer
 from random1SPlayer import random1SPlayer
 from random1SSadistPlayer import random1SSadistPlayer
 from opportunityPlayer import opportunityPlayer
+from tdPlayer import tdPlayer
 from err import err
 
 from random import randint
 from numpy import *
 
-VERBOSE = 1
-N_GAMES = 10000
+VERBOSE = 2
+N_GAMES = 10
 ROLL = False
 LINE = "-----------------------------------------"
 
@@ -20,8 +21,8 @@ def main():
 	global LINE
 	PLAY_ORDER = [1, 2]
 	g = xo(3, 3, 2, ['X', 'O'], PLAY_ORDER)
-	player1 = random1SPlayer(1, "Rand 1S", g)
-	player2 = random1SSadistPlayer(2, "Sadist 1S", g)
+	player1 = tdPlayer(2, "tdPlayer", g)
+	player2 = randomPlayer(1, "Rand", g)
 	print('\nThe XO - Tic Tac Toe Platform\n' + player1.title + ' vs ' + player2.title)
 	console_log(0, LINE)
 
@@ -31,11 +32,12 @@ def main():
 	player2_win_turns = 0
 	draw = 0
 
-	f = open('game_log_' + player1.name + '-vs-' + player2.name + '.csv', 'w')
 	# Play N Games
+	csv_line = ''
 	for i in range(0, N_GAMES):
-		csv_line = ''
 		g.reset()
+		player1.reset()
+		player2.reset()
 		current_winner = 0
 		# create a game instance
 		if ROLL:
@@ -87,7 +89,8 @@ def main():
 		for e in g.gameLog[:, 1]:
 			csv_line += ', ' + str(e)
 		csv_line += '\n'
-		f.write(csv_line)
+	f = open('game_log_' + player1.name + '-vs-' + player2.name + '.csv', 'w')
+	f.write(csv_line)
 	f.close()
 	console_log(1, '\n' + LINE)
 	print(player1.name + ' Winner :' + str(player1_win))

@@ -24,43 +24,43 @@ A generalized tic tac toe game class.
 
 
 class xo:
-	def __init__(o, M, N, K, sym, order):
+	def __init__(self, M, N, K, sym, order):
 		"""
 		Initilize a game with a board of size M x N with K players using the symbols in the list sym.
 		The players play in the order specified by the list order.
 		"""
-		o.brd = board(M, N, K, sym)
-		o.play_order = order
-		o.num_players = K
-		o.reset()
+		self.brd = board(M, N, K, sym)
+		self.play_order = order
+		self.num_players = K
+		self.reset()
 
-	def reset(o):
-		o.brd.reset()
-		o.game_turn = 0
-		o.gameLog = ones((9, 2), int)*-1
-		o.game_over = False
-		o.turn = o.play_order[0]
+	def reset(self):
+		self.brd.reset()
+		self.game_turn = 0
+		self.gameLog = ones(((self.brd.row * self.brd.col), 2), int)*-1
+		self.game_over = False
+		self.turn = self.play_order[0]
 
-	def mark(o, pos, player):
+	def mark(self, pos, player):
 		"""
 		Marks a position on the board with the symbol for the player.
 		If the position is already marked, the function returns err.INVALID_MOVE
 		If a player attempts to play out of turn, the function returns err.OUT_OF_TURN
 		"""
 		# Are we trying to play after the game is over?
-		if(not o.game_over):
+		if(not self.game_over):
 			# Is a player trying to play out of turn?
-			if(player == o.play_order[(o.game_turn % o.num_players)]):
-				returnVal = o.brd.set_pos(pos, player)
+			if(player == self.play_order[(self.game_turn % self.num_players)]):
+				returnVal = self.brd.set_pos(pos, player)
 				# is the postion selected to mark is not invalid?
 				if(returnVal == err.OK):
-					o.gameLog[o.game_turn] = [player, pos]
-					o.game_turn += 1
+					self.gameLog[self.game_turn] = [player, pos]
+					self.game_turn += 1
 					# Do we have a winner?
-					returnVal = o.has_won(player)
+					returnVal = self.has_won(player)
 					if (returnVal == err.WIN):
 						# Yes. We do have a winner
-						o.game_over = True
+						self.game_over = True
 			else:
 				# Cheat! Did you think you could get away by playing out of turn? Well, you cant!
 				console_log(1, "OUT OF TURN")
@@ -70,16 +70,16 @@ class xo:
 			returnVal = err.INVALID_MOVE
 		return returnVal
 
-	def get_board(o):
-		return o.brd.get_board_str()
+	def get_board(self):
+		return self.brd.get_board_str()
 
-	def has_won(o, player):
+	def has_won(self, player):
 		"""
 		Implemented for standard 3x3 tic tac toe game
 		"""
-		if (o.brd.free_positions == 0):
-			o.game_over = True
-		win_logic = (o.brd.board == player)
+		if (self.brd.free_positions == 0):
+			self.game_over = True
+		win_logic = (self.brd.board == player)
 		# Check linear
 		for i in range(0, 2):
 			lin_sum = sum(sum(win_logic, i) == 3)
@@ -93,11 +93,11 @@ class xo:
 			if (((sum(diagonal(win_logic))) == 3) |
 					((sum(diagonal(transpose(win_logic)))) == 3)):
 				returnVal = err.WIN
-		if ((o.game_over) & (returnVal == err.OK)):
+		if ((self.game_over) & (returnVal == err.OK)):
 			returnVal = err.DRAW
 		return returnVal
 
-	def stateless_has_won(o, board, player):
+	def stateless_has_won(self, board, player):
 		"""
 		Implemented for standard 3x3 tic tac toe game
 		"""

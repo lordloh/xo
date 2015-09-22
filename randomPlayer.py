@@ -13,6 +13,9 @@ class randomPlayer:
         o.title = "Random Player"
         o.game = game
 
+    def reset(self):
+        pass
+
     def play(o):
         possible_moves = []
         n = 0

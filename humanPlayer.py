@@ -6,6 +6,9 @@ class humanPlayer:
         o.play_as = play_as;
         o.title = "Human Player"
         o.game = game
+
+    def reset(self):
+        pass
         
     def play(o):
         boardString = "*********************\n";

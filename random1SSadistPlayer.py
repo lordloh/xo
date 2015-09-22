@@ -15,17 +15,23 @@ class random1SSadistPlayer:
 
     Essentially this is a 1 level min max algorithm.
     """
-    def __init__(o, play_as, name, game):
-        o.play_as = play_as
-        o.name = name
-        o.title = "Sadistic Player with one step look ahead"
-        o.game = game
+    def __init__(self, play_as, name, game):
+        self.play_as = play_as
+        self.name = name
+        self.title = "Sadistic Player with one step look ahead"
+        self.game = game
 
-    def play(o):
+    def __del__(self):
+        print('Destructor - Sadist')
+
+    def reset(self):
+        pass
+
+    def play(self):
         # Compute possible moves
         possible_moves = []
         n = 0
-        board = deepcopy(o.game.brd.board)
+        board = deepcopy(self.game.brd.board)
         for b in board:
             for e in b:
                 if (e == 0):
@@ -34,13 +40,13 @@ class random1SSadistPlayer:
         move = -1
         # See if our adversary can win if give a chance to play.
         # Compute the adversary's id
-        temp = roll(o.game.play_order, 1)
-        adversary = temp[o.play_as - 1]
+        temp = roll(self.game.play_order, 1)
+        adversary = temp[self.play_as - 1]
         for m in possible_moves:
             new_board = deepcopy(board)
-            x, y = o.game.brd.get_xy_from_pos(m)
+            x, y = self.game.brd.get_xy_from_pos(m)
             new_board[x][y] = adversary
-            result = o.game.stateless_has_won(new_board, adversary)
+            result = self.game.stateless_has_won(new_board, adversary)
             if (result == err.WIN):
                 move = m
                 break
@@ -49,9 +55,9 @@ class random1SSadistPlayer:
             # For each of the listed move, see if the player can win in the next move
             for m in possible_moves:
                 new_board = deepcopy(board)
-                x, y = o.game.brd.get_xy_from_pos(m)
-                new_board[x][y] = o.play_as
-                result = o.game.stateless_has_won(new_board, o.play_as)
+                x, y = self.game.brd.get_xy_from_pos(m)
+                new_board[x][y] = self.play_as
+                result = self.game.stateless_has_won(new_board, self.play_as)
                 if (result == err.WIN):
                     move = m
                     break
