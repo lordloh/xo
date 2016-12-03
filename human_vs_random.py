@@ -8,7 +8,7 @@ from err import err
 from random import randint
 from numpy import *
 
-VERBOSE = 2
+VERBOSE = 5
 N_GAMES = 2
 ROLL = False
 LINE = "-----------------------------------------"
@@ -41,8 +41,7 @@ def main():
 		# Keep playing till the game in not over.
 		while(g.game_over == False):
 			while True:
-				move = player1.play()
-				result = g.mark(move,1)
+				[move,result] = player1.play()
 				console_log (3,'Result: '+str(result)+"\n")
 				if (not((result == err.INVALID_MOVE) | (result == err.OUT_OF_TURN))):
 					break
@@ -60,8 +59,7 @@ def main():
 				rand1_win_turns += g.game_turn
 			if (g.game_over == False):
 				while True:
-					move = player2.play()
-					result = g.mark(move,2)
+					[move, result] = player2.play()
 					console_log (3,'Result: '+str(result)+"\n")
 					if (not((result == err.INVALID_MOVE) | (result == err.OUT_OF_TURN))):
 						break

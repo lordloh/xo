@@ -65,7 +65,8 @@ class random1SPlayer:
             move = possible_moves[randint(0, len(possible_moves)-1)]
         else:
             move = m
-        return int(move)
+        result = self.game.mark(move, self.play_as)
+        return int(move), result
 
 
 def main():

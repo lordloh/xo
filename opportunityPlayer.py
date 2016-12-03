@@ -22,17 +22,17 @@ class opportunityPlayer:
 	def reset(self):
 		pass
 
-	def play(o):
+	def play(self):
 		# Compute possible moves
 		possible_moves = []
 		available_oportunity = []
 		n = 0
-		board = deepcopy(o.game.brd.board)
+		board = deepcopy(self.game.brd.board)
 		for b in board:
 			for e in b:
 				if (e == 0):
 					possible_moves = possible_moves + [n]
-					available_oportunity += [o.opportunity[n]]
+					available_oportunity += [self.opportunity[n]]
 				n += 1
 		move = -1
 		# For each of the listed move, see if the player can win in the next move
@@ -40,7 +40,8 @@ class opportunityPlayer:
 		max_opportunity_pos = [possible_moves[i] for i, j in enumerate(available_oportunity) if j == max_available_opportunity]
 		# print("Play List:"+str(max_opportunity_pos))
 		move = max_opportunity_pos[randint(0, len(max_opportunity_pos)-1)]
-		return int(move)
+		result = self.game.mark(move, self.play_as)
+		return int(move), result
 
 
 def main():

@@ -16,17 +16,18 @@ class randomPlayer:
     def reset(self):
         pass
 
-    def play(o):
+    def play(self):
         possible_moves = []
         n = 0
-        board = o.game.brd.board
+        board = self.game.brd.board
         for b in board:
             for e in b:
                 if (e == 0):
                     possible_moves = possible_moves + [n]
                 n += 1
         move = possible_moves[randint(0, len(possible_moves)-1)]
-        return int(move)
+        result = self.game.mark(move, self.play_as)
+        return int(move), result
 
 
 def main():

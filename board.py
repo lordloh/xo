@@ -5,38 +5,38 @@ from err import *
 
 
 class board:
-    def __init__(o, M, N, K, symbols):
+    def __init__(self, M, N, K, symbols):
         """
         Initilize a board of size m (rows) x n (columns), with k players playing in turn.
         Players use the symbols specified.
         """
-        o.row = N
-        o.col = M
-        o.max_address = (M * N)
-        o.num_players = K
-        o.players = list(range(0, (K+1)))
-        o.sym = [' ']+symbols
-        o.reset()
+        self.row = N
+        self.col = M
+        self.max_address = (M * N)
+        self.num_players = K
+        self.players = list(range(0, (K+1)))
+        self.sym = [' ']+symbols
+        self.reset()
 
-    def reset(o):
-        row = [0] * o.row
-        o.board = zeros((o.col, o.row), 'int')
-        o.free_positions = o.col * o.row
+    def reset(self):
+        row = [0] * self.row
+        self.board = zeros((self.col, self.row), 'int')
+        self.free_positions = self.col * self.row
 
-    def get_xy_from_pos(o, pos):
-        x = int(math.floor(pos / o.row))
-        y = pos % o.col
+    def get_xy_from_pos(self, pos):
+        x = int(math.floor(pos / self.row))
+        y = pos % self.col
         return x, y
 
-    def set_pos(o, pos, player):
-        if(pos < o.max_address):
-            # x = int (math.floor( pos / o.row ))
-            # y = pos % o.col
-            x, y = o.get_xy_from_pos(pos)
-            if(o.board[x][y] == 0):
-                o.board[x][y] = player
+    def set_pos(self, pos, player):
+        if(pos < self.max_address):
+            # x = int (math.floor( pos / self.row ))
+            # y = pos % self.col
+            x, y = self.get_xy_from_pos(pos)
+            if(self.board[x][y] == 0):
+                self.board[x][y] = player
                 returnVal = err.OK
-                o.free_positions -= 1
+                self.free_positions -= 1
             else:
                 returnVal = err.INVALID_MOVE
             # dbg(1,"X:" + str(x) + "  Y:" +str(y)+" R:"+str(returnVal))
@@ -44,20 +44,20 @@ class board:
             returnVal = err.INVALID_MOVE
         return returnVal
 
-    def get_board_str(o):
+    def get_board_str(self):
         board_string = '\n'
-        for j, rows in enumerate(o.board):
+        for j, rows in enumerate(self.board):
             for i, e in enumerate(rows):
-                board_string += ' ' + o.sym[e] + ' '
+                board_string += ' ' + self.sym[e] + ' '
                 if i < len(rows)-1:
                     board_string += '|'
-            if(j < len(o.board)-1):
+            if(j < len(self.board)-1):
                 board_string += '\n---+---+---\n'
         board_string += '\n'
         return board_string
 
-    def count_empty_squares(o):
-        o.free_positions = sum(sum(o.board == 0))
+    def count_empty_squares(self):
+        self.free_positions = sum(sum(self.board == 0))
         return None
 
 

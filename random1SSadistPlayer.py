@@ -22,7 +22,7 @@ class random1SSadistPlayer:
         self.game = game
 
     def __del__(self):
-        print('Destructor - Sadist')
+        pass
 
     def reset(self):
         pass
@@ -67,7 +67,8 @@ class random1SSadistPlayer:
         else:
             # We can win in the next move.
             move = m
-        return int(move)
+        result = self.game.mark(move, self.play_as)
+        return int(move), result
 
 
 def main():

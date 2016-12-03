@@ -11,18 +11,18 @@ from err import err
 from random import randint
 from numpy import *
 
-VERBOSE = 2
-N_GAMES = 10
+VERBOSE = 0
+N_GAMES = 10000
 ROLL = False
 LINE = "-----------------------------------------"
 
 
 def main():
 	global LINE
-	PLAY_ORDER = [1, 2]
+	PLAY_ORDER = [2,1]
 	g = xo(3, 3, 2, ['X', 'O'], PLAY_ORDER)
-	player1 = tdPlayer(2, "tdPlayer", g)
-	player2 = randomPlayer(1, "Rand", g)
+	player1 = random1SSadistPlayer(1, "Rand1SSaddist", g)
+	player2 = random1SPlayer(2, "Rnd1SPlayer", g)
 	print('\nThe XO - Tic Tac Toe Platform\n' + player1.title + ' vs ' + player2.title)
 	console_log(0, LINE)
 
@@ -44,8 +44,8 @@ def main():
 			PLAY_ORDER = roll(PLAY_ORDER, 1)
 		# Keep playing till the game in not over.
 		while(not g.game_over):
-			move = player1.play()
-			result = g.mark(move, 1)
+			move, result = player1.play()
+			#result = g.mark(move, 1)
 			console_log(3, 'Result: ' + str(result) + '\n')
 			if (result == err.DRAW):
 				console_log(2, '______________________')
@@ -63,8 +63,8 @@ def main():
 				player1_win += 1
 				player1_win_turns += g.game_turn
 			if (not g.game_over):
-				move = player2.play()
-				result = g.mark(move, 2)
+				move, result = player2.play()
+				#result = g.mark(move, 2)
 				console_log(3, 'Result: ' + str(result) + '\n')
 				if (result == err.DRAW):
 					console_log(2, '______________________')
